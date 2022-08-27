@@ -1,7 +1,9 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import {filterImageFromURL, deleteLocalFiles} from './util/util';
+import {filterImageFromURL, deleteLocalFiles, files} from './util/util';
 import { send } from 'process';
+import { append } from 'cheerio/lib/api/manipulation';
+import { next } from 'cheerio/lib/api/traversing';
 
 (async () => {
 
@@ -29,9 +31,10 @@ import { send } from 'process';
 
   /**************************************************************************** */
 
-  app.get( "/filteredimage", async ( req, res ) => {
-    let {image_url}= req.query;
 
+  app.get( "/filteredimage", async ( req, res ,next) => {
+    let {image_url}= req.query;
+    res.contentType("image/png");
      //    1. validate the image_url query
     if(!image_url){
       res.status(403).send("Imge URL is Required!!!");
@@ -39,16 +42,16 @@ import { send } from 'process';
      //    2. call filterImageFromURL(image_url) to filter the image
      //    3. send the resulting file in the response
     filterImageFromURL(image_url as unknown as string).then((data)=>{
-      console.log(data);
       res.status(200).sendFile(data);
     }).catch((err)=>{
-      console.log("Error : "+err);
+      res.status(403).send("Error : "+err);
     }) 
-    
-    //download and filter the image on the server
+    next();
+  } ,(req,res,next)=>{
      //    4. deletes any files on the server on finish of the response
-  
-  } );
+     console.log(files);
+      deleteLocalFiles(files);
+  });
 
   //! END @TODO1
   
@@ -64,4 +67,7 @@ import { send } from 'process';
       console.log( `server running http://localhost:${ port }` );
       console.log( `press CTRL+C to stop server` );
   } );
+
+
 })();
+
