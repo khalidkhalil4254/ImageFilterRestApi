@@ -1,9 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import {filterImageFromURL, deleteLocalFiles, files} from './util/util';
-import { send } from 'process';
-import { append } from 'cheerio/lib/api/manipulation';
-import { next } from 'cheerio/lib/api/traversing';
+import {filterImageFromURL, deleteLocalFiles, files ,refactoredMethod} from './util/util';
+
 
 (async () => {
 
@@ -15,6 +13,8 @@ import { next } from 'cheerio/lib/api/traversing';
   
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
+
+
 
   // @TODO1 IMPLEMENT A RESTFUL ENDPOINT
   // GET /filteredimage?image_url={{URL}} <== ( as query).
@@ -34,23 +34,21 @@ import { next } from 'cheerio/lib/api/traversing';
 
   app.get( "/filteredimage", async ( req, res ,next) => {
     let {image_url}= req.query;
-    res.contentType("image/png");
+  
      //    1. validate the image_url query
     if(!image_url){
       res.status(403).send("Imge URL is Required!!!");
     }
      //    2. call filterImageFromURL(image_url) to filter the image
+    await refactoredMethod(image_url as unknown as string);
      //    3. send the resulting file in the response
-    filterImageFromURL(image_url as unknown as string).then((data)=>{
-      res.status(200).sendFile(data);
-    }).catch((err)=>{
-      res.status(403).send("Error : "+err);
-    }) 
+     console.log(files[files.length-1]);
+   setTimeout(()=>{res.status(200).sendFile(files[files.length-1]);},5000);
+    
     next();
   } ,(req,res,next)=>{
      //    4. deletes any files on the server on finish of the response
-     console.log(files);
-      deleteLocalFiles(files);
+     setTimeout(()=>{  deleteLocalFiles(files);},6000);
   });
 
   //! END @TODO1
