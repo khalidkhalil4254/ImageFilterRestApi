@@ -15,30 +15,30 @@ export let files:string[]=[];
 //a method to filter a given image by url and returns a promise 
 
 
-export async function filterImageFromURL(inputURL: string): Promise<string> {
-  return new Promise(async (resolve, reject) => {
-    try {
-      console.log("start reading image from src...");
-          //converting the image into buffer first: 
+// export async function filterImageFromURL(inputURL: string): Promise<string> {
+//   return new Promise(async (resolve, reject) => {
+//     try {
+//       console.log("start reading image from src...");
+//           //converting the image into buffer first: 
 
-          refactoredMethod(inputURL);
+//           refactoredMethod(inputURL);
 
-      const photo= await Jimp.read(inputURL)
-      console.log(inputURL);
-      const outpath: string = `/tmp/filtered_${Math.floor(Math.random()*2000)}.jpg`; //setting a new name for the image inside the directory to store it in
-      files.push(`${__dirname}${outpath}`);      
-        // photo
-        // .resize(256, 256) //1- resize
-        // .quality(60) //2- set JPEG quality
-        // .greyscale() //3- set greyscale
-        // .write(__dirname + outpath, (img) => {
-        //   resolve(__dirname + outpath); // 4- write the filtered image into a directory
-        // });      
-    } catch (error) {
-      reject(error);
-    }
-  });
-}
+//       const photo= await Jimp.read(inputURL)
+//       console.log(inputURL);
+//       const outpath: string = `/tmp/filtered_${Math.floor(Math.random()*2000)}.jpg`; //setting a new name for the image inside the directory to store it in
+//       files.push(`${__dirname}${outpath}`);      
+//         // photo
+//         // .resize(256, 256) //1- resize
+//         // .quality(60) //2- set JPEG quality
+//         // .greyscale() //3- set greyscale
+//         // .write(__dirname + outpath, (img) => {
+//         //   resolve(__dirname + outpath); // 4- write the filtered image into a directory
+//         // });      
+//     } catch (error) {
+//       reject(error);
+//     }
+//   });
+// }
 
   //returns the buffer promise of specified image======================================
 export async function refactoredMethod(imgUrl:string){
@@ -59,22 +59,24 @@ export async function refactoredMethod(imgUrl:string){
           resolve(__dirname + outpath); // 4- write the filtered image into a directory
         });
     })   
+  }).catch((err)=>{
+    console.log("Error:"+err);
   })
 
 }
 
 
 
-async function getImg(imgUrl:string) {
-  try {
-    const response = await axios.get(imgUrl);
-    let img=response.data;
-  } catch (error) {
-    console.error(error);
-  }
-}
+// async function getImg(imgUrl:string) {
+//   try {
+//     const response = await axios.get(imgUrl);
+//     let img=response.data;
+//   } catch (error) {
+//     console.error(error);
+//   }
+// }
 
-  getImg("https://upload.wikimedia.org/wikipedia/commons/b/bd/Golden_tabby_and_white_kitten_n01.jpg");
+//   getImg("https://upload.wikimedia.org/wikipedia/commons/b/bd/Golden_tabby_and_white_kitten_n01.jpg");
 
 // deleteLocalFiles
 // helper function to delete files on the local disk
