@@ -2,8 +2,7 @@ import fs from "fs";
 import Jimp = require("jimp");
 import axios from 'axios';
 import { resolve } from "path";
-import { TIMEOUT } from "dns";
-export let files:string[]=[];
+export let files : string[] = [];
 
 
 
@@ -20,8 +19,8 @@ export let files:string[]=[];
 //it requests the image as a client as i understood <===
 //occured when reading it ==> Error: MIME not found for buffer
 //returns the buffer promise of specified image======================================
-export async function filterImageFromURL(imgUrl:string){
-  const outpath: string = `/tmp/filtered_${Math.floor(Math.random()*2000)}.jpg`; //setting a new name for the image inside the directory to store it in
+export async function filterImageFromURL( imgUrl : string ) : Promise<void> {
+  const outpath : string = `/tmp/filtered_${Math.floor(Math.random()*2000)}.jpg`; //setting a new name for the image inside the directory to store it in
   files.push(`${__dirname}${outpath}`);
   await axios({
     method: 'get',
@@ -38,7 +37,7 @@ export async function filterImageFromURL(imgUrl:string){
           resolve(__dirname + outpath); // 4- write the filtered image into a directory
         });
     })   
-  }).catch((err)=>{
+  }).catch(( err : Error )=>{
     console.log("Error:"+err);
   })
 
@@ -46,7 +45,7 @@ export async function filterImageFromURL(imgUrl:string){
 
 
 //deleting the files in the filtered images directory
-export function deleteLocalFiles(files: Array<string>) {
+export function deleteLocalFiles(files: Array<string>) : void {
   for (let file of files) {
     fs.unlinkSync(file);
     files.shift();
