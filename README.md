@@ -27,4 +27,6 @@ Launch the backend API locally. The API is the application's interface to the Im
     ```bash
     npm run dev
     ```
-* You can visit `http://localhost:8080/filteredimage?Imaage_Url=${your_image_Url}` in your web browser to verify that the application is running. You should see an Image as the expected response.
+* You can visit `http://localhost:8082/filteredimage?Imaage_Url=${your_image_Url}` in your web browser to verify that the application is running. You should see an Image as the expected response.
+
+* You Can Try the application using index.html as a simple gui to enter your image url and submit it.
